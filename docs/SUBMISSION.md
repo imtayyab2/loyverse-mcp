@@ -1,0 +1,73 @@
+# Submitting this server to Claude
+
+Anthropic runs two separate intake paths, with very different requirements. This server
+is ready for one of them today and needs hosting work for the other.
+
+## Path A — Desktop extension (open to anyone)
+
+Local servers are distributed as MCP Bundles and submitted through a plain form at
+`https://clau.de/desktop-extention-submission`. No Claude organisation plan is needed.
+
+What is already in place:
+
+- Every tool carries a `title` and either `readOnlyHint` or `destructiveHint`. A unit
+  test fails the build if one is missing.
+- A "Privacy Policy" section in `README.md`, as local connectors are required to have.
+- Setup and usage instructions, and three example prompts that exercise different tools.
+
+What is still needed:
+
+- A `manifest.json` at manifest version 0.2 or later, with a `privacy_policies` array
+  holding an HTTPS URL. That means publishing the privacy policy somewhere public, for
+  example a GitHub Pages copy of the README section, rather than only in the repository.
+- Packaging as an `.mcpb` bundle.
+- An icon.
+
+## Path B — Connectors Directory (remote servers only)
+
+The directory portal lives at `https://claude.ai/admin-settings/directory/submissions/new`,
+inside a Claude organisation's settings.
+
+Two hard gates apply before any code matters:
+
+1. **A Team or Enterprise organisation.** Organisation settings do not exist on
+   individual plans, so the portal cannot be opened without one.
+2. **Hosting.** The portal accepts remote servers only, at an `https://` URL over
+   streamable HTTP or SSE. A stdio server cannot be submitted here.
+
+Further requirements:
+
+- **OAuth 2.0**, not a pasted access token. Loyverse supports this: register a developer
+  app, then run the authorisation-code flow against
+  `https://cloud.loyverse.com/oauth/authorize` and exchange the code at `/oauth/token`.
+  The client in `src/loyverse/client.ts` takes its token as a constructor argument and
+  holds no module state, so a per-session client can be built on each authenticated
+  request without restructuring the tools.
+- **A public privacy policy URL** and public documentation. A missing or incomplete
+  privacy policy is an immediate rejection.
+- **A reviewer test account** with realistic sample data, and confirmation that every
+  tool has been run. `npm run smoke` covers the read-only half; the write tools need a
+  throwaway Loyverse account rather than a live one.
+- **A data-handling declaration.** One step asks whether the underlying API is your own,
+  proxied from a partner with permission, or a third party's that you do not control.
+
+### The honest risk on Path B
+
+Loyverse is a third party. This server wraps their API without affiliation, which is
+what that declaration exists to surface. Directory review favours connectors submitted
+by the organisation that owns the API, and a third-party wrapper can be rejected on that
+basis alone regardless of build quality. Worth knowing before investing in hosting and
+an OAuth deployment.
+
+Two ways to reduce it:
+
+- Approach Loyverse first and ask for written permission, or for them to submit it with
+  this work as the basis.
+- Ship Path A and npm in the meantime. Neither depends on directory approval, and both
+  give the server real users.
+
+## Pre-submission checklist
+
+Run `npm run typecheck && npm test && npm run smoke` and confirm all three are clean.
+Then check against Anthropic's own review criteria at
+`https://claude.com/docs/connectors/building/review-criteria`.
