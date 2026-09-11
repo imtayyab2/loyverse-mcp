@@ -22,14 +22,20 @@ What is already in place:
   bundled into a single file, so the extension ships no `node_modules`. The bundled
   file has been run standalone, outside the repository, against the live API.
 
-What is still needed:
+- Public URLs that resolve. The repository is public at
+  `https://github.com/imtayyab2/loyverse-mcp`, and the manifest's `privacy_policies`,
+  `homepage`, `documentation` and `support` all return 200. The privacy policy anchor
+  resolves to the "Privacy Policy" heading in `README.md`.
+- A `v0.1.0` release carrying `loyverse.mcpb`, which is what the README tells users to
+  download.
 
-- **Public URLs that actually resolve.** The manifest's `privacy_policies` points at
-  `https://github.com/imtayyab2/loyverse-mcp#privacy-policy`, and `homepage`,
-  `documentation` and `support` point at the same repository. None of them exist until
-  the repository is pushed public. A missing or unreachable privacy policy is an
-  immediate rejection, so this must be real before submitting.
-- A release holding the `.mcpb`, since the README tells users to download it there.
+Path A is ready to submit. Use the form at
+`https://clau.de/desktop-extention-submission`.
+
+Before submitting, note that the form asks you to confirm you have run every tool.
+`npm run smoke` covers the 26 read tools. The 15 write tools have deliberately not been
+run against a live merchant account, so exercise those against a throwaway Loyverse
+account first rather than claiming coverage you do not have.
 
 ## Path B — Connectors Directory (remote servers only)
 
