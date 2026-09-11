@@ -35,7 +35,23 @@ In the Loyverse back office, go to **Settings > Access tokens**, add a token, an
 it. The token grants full access to the account, so treat it as a password. If a token
 is ever exposed, delete it in the same screen and issue a new one.
 
-## Install
+## Install as a desktop extension
+
+The quickest route. Download `loyverse.mcpb` from the
+[releases page](https://github.com/imtayyab2/loyverse-mcp/releases), then drag it onto
+Claude Desktop's extensions settings. Claude asks for your access token on install and
+stores it as a sensitive value. Nothing else is required: the bundle carries the whole
+server in one file and has no `node_modules` to install.
+
+To build the bundle yourself:
+
+```bash
+npm install && npm run bundle
+```
+
+That produces `loyverse.mcpb` at the repository root.
+
+## Install from source
 
 ```bash
 npm install && npm run build
