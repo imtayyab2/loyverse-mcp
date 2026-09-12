@@ -9,3 +9,5 @@ coverage/
 bundle/
 *.mcpb
 assets/*.tmp
+mcp-publisher.exe
+*.tgz

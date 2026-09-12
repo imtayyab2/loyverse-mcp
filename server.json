@@ -1,0 +1,58 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.imtayyab2/loyverse-mcp",
+  "title": "Loyverse",
+  "description": "Read and manage a Loyverse POS account: catalogue, stock, customers, receipts and sales reports.",
+  "version": "0.1.0",
+  "repository": {
+    "url": "https://github.com/imtayyab2/loyverse-mcp",
+    "source": "github"
+  },
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "loyverse-mcp",
+      "version": "0.1.0",
+      "transport": { "type": "stdio" },
+      "environmentVariables": [
+        {
+          "name": "LOYVERSE_ACCESS_TOKEN",
+          "description": "Loyverse access token, from the back office under Settings > Access tokens. Grants full access to the account.",
+          "isRequired": true,
+          "isSecret": true,
+          "format": "string"
+        },
+        {
+          "name": "LOYVERSE_API_BASE",
+          "description": "Override the Loyverse API host. Defaults to https://api.loyverse.com/v1.0",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "string"
+        },
+        {
+          "name": "LOYVERSE_TIMEOUT_MS",
+          "description": "Per-request timeout in milliseconds. Defaults to 30000.",
+          "isRequired": false,
+          "isSecret": false,
+          "format": "number"
+        }
+      ]
+    },
+    {
+      "registryType": "mcpb",
+      "identifier": "https://github.com/imtayyab2/loyverse-mcp/releases/download/v0.1.0/loyverse.mcpb",
+      "version": "0.1.0",
+      "fileSha256": "d56bc510949d209585ba5cbe263fa23616f463d22607295c6c7fe2a68b79457f",
+      "transport": { "type": "stdio" },
+      "environmentVariables": [
+        {
+          "name": "LOYVERSE_ACCESS_TOKEN",
+          "description": "Loyverse access token, from the back office under Settings > Access tokens. Grants full access to the account.",
+          "isRequired": true,
+          "isSecret": true,
+          "format": "string"
+        }
+      ]
+    }
+  ]
+}
