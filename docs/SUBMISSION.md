@@ -26,7 +26,7 @@ What is already in place:
   `https://github.com/imtayyab2/loyverse-mcp`, and the manifest's `privacy_policies`,
   `homepage`, `documentation` and `support` all return 200. The privacy policy anchor
   resolves to the "Privacy Policy" heading in `README.md`.
-- A `v0.1.0` release carrying `loyverse.mcpb`, which is what the README tells users to
+- A `v0.1.1` release carrying `loyverse.mcpb`, which is what the README tells users to
   download.
 
 Path A is ready to submit. Use the form at

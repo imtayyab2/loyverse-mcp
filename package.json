@@ -1,6 +1,6 @@
 {
   "name": "loyverse-mcp",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Model Context Protocol server for the Loyverse POS API.",
   "license": "MIT",
   "type": "module",

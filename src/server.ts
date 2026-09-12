@@ -7,7 +7,7 @@ import type { ToolContext } from "./tools/types.js";
 import type { ServerConfig } from "./config.js";
 
 export const SERVER_NAME = "loyverse";
-export const SERVER_VERSION = "0.1.0";
+export const SERVER_VERSION = "0.1.1";
 
 /**
  * Build the MCP server around one Loyverse client. The client is a parameter

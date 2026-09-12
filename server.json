@@ -3,7 +3,7 @@
   "name": "io.github.imtayyab2/loyverse-mcp",
   "title": "Loyverse",
   "description": "Read and manage a Loyverse POS account: catalogue, stock, customers, receipts and sales reports.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "repository": {
     "url": "https://github.com/imtayyab2/loyverse-mcp",
     "source": "github"
@@ -12,7 +12,7 @@
     {
       "registryType": "npm",
       "identifier": "loyverse-mcp",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "transport": { "type": "stdio" },
       "environmentVariables": [
         {
@@ -40,9 +40,9 @@
     },
     {
       "registryType": "mcpb",
-      "identifier": "https://github.com/imtayyab2/loyverse-mcp/releases/download/v0.1.0/loyverse.mcpb",
-      "version": "0.1.0",
-      "fileSha256": "d56bc510949d209585ba5cbe263fa23616f463d22607295c6c7fe2a68b79457f",
+      "identifier": "https://github.com/imtayyab2/loyverse-mcp/releases/download/v0.1.1/loyverse.mcpb",
+      "version": "0.1.1",
+      "fileSha256": "f82d19e763926e8cf9a2dc20c729ad14a716fe2944343ab0546927f2322267c1",
       "transport": { "type": "stdio" },
       "environmentVariables": [
         {
