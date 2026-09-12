@@ -172,8 +172,9 @@ No. The only paid feature that matters here is Unlimited Sales History, without 
 the API serves the last 31 days of receipts.
 
 **Which MCP clients does it work with?**
-Any of them. It has been tested with Claude Desktop, as a `.mcpb` extension and through
-`claude_desktop_config.json`. The desktop extension is the easiest route.
+Any of them, since it speaks MCP over stdio. It has been tested end to end in Claude
+Desktop as a `.mcpb` extension, and the from-source build has been driven directly over
+stdio. The desktop extension is the easiest route.
 
 **Is my sales data sent anywhere?**
 No. Requests go only to `api.loyverse.com`. The server has no database, no logging and
