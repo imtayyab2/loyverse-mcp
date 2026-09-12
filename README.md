@@ -1,18 +1,51 @@
-# Loyverse MCP
+<img src="assets/icon.png" alt="Loyverse MCP server icon: a paper receipt" width="96" align="right">
 
-A [Model Context Protocol](https://modelcontextprotocol.io) server for the
-[Loyverse](https://loyverse.com) point-of-sale API. It lets an MCP client read and
-manage a Loyverse account: catalogue, stock, customers, receipts and sales reporting.
+# Loyverse MCP Server
+
+**Connect Claude to your Loyverse point-of-sale account.** An open-source
+[Model Context Protocol](https://modelcontextprotocol.io) (MCP) server that gives Claude
+Desktop, Claude Code and any other MCP client read and write access to your
+[Loyverse](https://loyverse.com) catalogue, inventory, customers, receipts and sales
+reports.
+
+[![Release](https://img.shields.io/github/v/release/imtayyab2/loyverse-mcp?label=release)](https://github.com/imtayyab2/loyverse-mcp/releases)
+[![Licence](https://img.shields.io/github/license/imtayyab2/loyverse-mcp)](LICENSE)
+[![Node](https://img.shields.io/badge/node-%3E%3D20-brightgreen)](https://nodejs.org)
+[![MCP](https://img.shields.io/badge/MCP-server-blue)](https://modelcontextprotocol.io)
+
+Ask questions about your shop in plain English and get answers from live till data, or
+have Claude update your catalogue and stock for you. Install it as a one-click Claude
+Desktop extension, or run it from source in any MCP client.
 
 Built against the published Loyverse API v1.0 reference. Every read tool in this
 repository has been run against a live Loyverse account.
 
-## What it does
+## What you can ask
 
-Twenty-six read tools and fifteen write tools across the whole documented API surface,
-plus one tool the API does not provide: `loyverse_sales_summary` aggregates a date
-range into totals and a ranked breakdown, so a question like "what sold best last week"
-costs one call instead of paging through hundreds of receipts.
+Once connected, these all work without you touching the Loyverse back office:
+
+- **Sales reporting.** "What were my top five selling dishes last week, and how much did
+  each bring in?" or "Compare cash against card takings for the last fortnight."
+- **Stock checks.** "Which items are down to fewer than three in stock at my main store?"
+- **Catalogue edits.** "Add a new item called Mango Lassi at £3.50 in the Drinks
+  category, then set its opening stock to 40."
+- **Reconciliation.** "Show me every shift that closed more than £5 away from the
+  expected cash."
+- **Customer lookups.** "Which loyalty customers have not visited in 60 days?"
+
+## Why this exists
+
+The Loyverse API returns raw receipts. Answering "what sold best last week" from those
+means paging through hundreds of records, which is slow and burns a lot of context.
+
+This server adds `loyverse_sales_summary`, a tool the API does not provide. It
+aggregates a date range into totals and a ranked breakdown by day, item, category,
+payment type, employee or store, in a single call. Everything else maps closely to the
+underlying API so nothing is hidden from you.
+
+## Features
+
+Twenty-six read tools and fifteen write tools across the whole documented API surface.
 
 | Area | Tools |
 |---|---|
@@ -24,24 +57,28 @@ costs one call instead of paging through hundreds of receipts.
 | Reporting | sales summary by day, item, category, payment type, employee or store |
 | Integration | webhook subscriptions |
 
+Also included: cursor pagination handled for you, automatic retry with backoff against
+the API rate limit, and errors translated into plain sentences rather than bare status
+codes.
+
 ## Requirements
 
-- Node.js 20 or newer
+- Node.js 20 or newer, for the from-source install only
 - A Loyverse account and an access token
 
-## Getting a token
+## Getting a Loyverse access token
 
 In the Loyverse back office, go to **Settings > Access tokens**, add a token, and copy
 it. The token grants full access to the account, so treat it as a password. If a token
 is ever exposed, delete it in the same screen and issue a new one.
 
-## Install as a desktop extension
+## Install as a Claude Desktop extension
 
-The quickest route. Download `loyverse.mcpb` from the
+The quickest route, and nothing to build. Download `loyverse.mcpb` from the
 [releases page](https://github.com/imtayyab2/loyverse-mcp/releases), then drag it onto
 Claude Desktop's extensions settings. Claude asks for your access token on install and
-stores it as a sensitive value. Nothing else is required: the bundle carries the whole
-server in one file and has no `node_modules` to install.
+stores it as a sensitive value. The bundle carries the whole server in one file and has
+no `node_modules` to install.
 
 To build the bundle yourself:
 
@@ -57,9 +94,7 @@ That produces `loyverse.mcpb` at the repository root.
 npm install && npm run build
 ```
 
-## Connect it to Claude
-
-Add the server to your MCP client's configuration. For Claude Desktop, edit
+Then add the server to your MCP client's configuration. For Claude Desktop, edit
 `claude_desktop_config.json`:
 
 ```json
@@ -84,13 +119,6 @@ For local development, copy `.env.example` to `.env`, put the token there and ru
 | `LOYVERSE_ACCESS_TOKEN` | yes | — | Loyverse access token |
 | `LOYVERSE_API_BASE` | no | `https://api.loyverse.com/v1.0` | Override the API host |
 | `LOYVERSE_TIMEOUT_MS` | no | `30000` | Per-request timeout |
-
-## Example prompts
-
-- "What were my top five selling dishes last week, and how much did each bring in?"
-- "Which items are down to fewer than three in stock at my main store?"
-- "Add a new item called Mango Lassi at £3.50 in the Drinks category, then set its
-  opening stock to 40."
 
 ## Things the Loyverse API will not do
 
@@ -132,6 +160,38 @@ npm run smoke     # every read-only tool against the live account in .env
 ```
 
 `npm run smoke` never calls a write tool.
+
+## FAQ
+
+**Is this an official Loyverse integration?**
+No. It is an independent open-source project, not built, endorsed or supported by
+Loyverse.
+
+**Do I need a paid Loyverse plan?**
+No. The only paid feature that matters here is Unlimited Sales History, without which
+the API serves the last 31 days of receipts.
+
+**Which MCP clients does it work with?**
+Any of them. It has been tested with Claude Desktop, as a `.mcpb` extension and through
+`claude_desktop_config.json`. The desktop extension is the easiest route.
+
+**Is my sales data sent anywhere?**
+No. Requests go only to `api.loyverse.com`. The server has no database, no logging and
+no analytics. See the Privacy Policy below.
+
+**Can it change or delete my data?**
+Yes. Fifteen of the forty-one tools write, and three of those are irreversible. They are
+annotated so your client can warn you, but treat the access token as full account
+access, because that is what Loyverse gives it.
+
+**Does it support more than one store?**
+Yes. Tools that make sense per store take a `store_id`, and the sales summary can group
+by store.
+
+**Does it support Loyverse OAuth instead of an access token?**
+Not yet. OAuth is needed for a hosted, multi-tenant deployment and is planned. The
+client is already written to take a token per session, so it is a transport change
+rather than a rewrite.
 
 ## Privacy Policy
 
